@@ -3,7 +3,7 @@ from attr import attr
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm,PasswordChangeForm,SetPasswordForm
 
 class Sign_upForm(UserCreationForm):
     mobile=forms.CharField(max_length=20,required=False)
@@ -23,5 +23,16 @@ class Sign_upForm(UserCreationForm):
             
         }
 class Sign_in_Form(AuthenticationForm):
-    username=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Username'}))
-    password=forms.CharField(error_messages={'required':'Enter Correct Password'},widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'Password'}))
+    username=forms.CharField(error_messages={'required':'Enter Username'},widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Username'}))
+    password=forms.CharField(error_messages={'required':'Enter  Password'},widget=forms.PasswordInput(attrs={'class':'form-control','placeholder':'Password'}))
+
+class Password_Change_Form(PasswordChangeForm):
+    old_password=forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control'}))
+    new_password1=forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control'}))
+    new_password2=forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control'}))
+
+class Set_Change_Form(SetPasswordForm):
+   
+    new_password1=forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control'}))
+    new_password2=forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control'}))
+

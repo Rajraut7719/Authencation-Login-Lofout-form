@@ -23,10 +23,25 @@
               </div>
               {% endfor %}
               {% endif %}
-            <h2 class='text-center text-secondary mt-2'>Welcome {{name}} </h2>
-              <a href="{% url 'logout' %}"class='btn btn-dark form-control mb-5'>Logout</a>
-              <a href="{% url 'changepass' %}"class='btn btn-secondary form-control mb-5'>Change Password</a>
-              <a href="{% url 'changepass1' %}"class='btn btn-secondary form-control mb-5'>without old password</a>
+              <form action="" method="post"novalidate class='mt-2 bg-light  p-5'>
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                  {% for error in form.non_field_errors %}
+                   <p class='text-danger'> {{error}}</p>
+                  {% endfor %}
+                {% endif %}
+                {% for fm in form %}
+                    <div class="mb-4">
+                      {{fm.label_tag}} {{fm}}{{fm.errors|striptags}}   
+                      </div>
+                {% endfor %}
+                <input type="submit"value='Save'class='btn btn-success'>
+            </form>
+            <a href="{% url 'profile' %}"class='btn btn-primary  mb-5'>Profile</a>
+            <a href="{% url 'logout' %}"class='btn btn-secondary  mb-5'>Logout</a>
+           
+            
         </div>
     </div>
    </div>

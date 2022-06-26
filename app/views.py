@@ -1,8 +1,8 @@
 from multiprocessing import AuthenticationError
 from django.shortcuts import redirect, render,HttpResponseRedirect
-from .forms import Sign_upForm,Sign_in_Form
+from .forms import Sign_upForm,Sign_in_Form,Password_Change_Form, Set_Change_Form
 from django.contrib import messages
-from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth import authenticate,login,logout,update_session_auth_hash
 
 # Create your views here.
 # Register Form
@@ -47,3 +47,36 @@ def user_profile(request):
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect('/sign-in/')
+
+# Change pasword with old password
+def user_changepass(request):
+    if request.user.is_authenticated:
+        if request.method=='POST':
+            fm=Password_Change_Form(user=request.user,data=request.POST)
+            if fm.is_valid():
+                fm.save()
+                update_session_auth_hash(request,fm.user)
+                messages.success(request,'Password Changed Successfully')
+                return HttpResponseRedirect('/profile/')
+        else: 
+            fm=Password_Change_Form(user=request.user)
+    
+        return render(request,'app/changepass.html',{'form':fm})
+    else:
+        return HttpResponseRedirect('/sign-in/')
+
+def user_changepass1(request):
+    if request.user.is_authenticated:
+        if request.method=='POST':
+            fm=Set_Change_Form(user=request.user,data=request.POST)
+            if fm.is_valid():
+                fm.save()
+                update_session_auth_hash(request,fm.user)
+                messages.success(request,'Password Changed Successfully')
+                return HttpResponseRedirect('/profile/')
+        else: 
+            fm= Set_Change_Form(user=request.user)
+    
+        return render(request,'app/changepass1.html',{'form':fm})
+    else:
+        return HttpResponseRedirect('/sign-in/')
